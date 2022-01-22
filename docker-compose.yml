@@ -1,0 +1,24 @@
+version: "4.0"
+services:
+  assignment:
+    container_name: a1
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    depends_on:
+      - neo4j
+    ports:
+      - '8080:8080'
+    environment:
+      - NEO4J_ADDR=neo4j
+      - HTTP_PROXY="http://cms-proxy.utsc.utoronto.ca:8118/"
+      - HTTPS_PROXY="http://cms-proxy.utsc.utoronto.ca:8118/"
+      - NO_PROXY=".utsc.utoronto.ca,.utoronto.ca,127.0.0.0/8"
+  neo4j:
+    container_name: neo4j
+    platform: linux/amd64
+    image: neo4j:latest
+    environment:
+      - NEO4J_AUTH=neo4j/123456
+    ports:
+      - '7687:7687'
